@@ -203,3 +203,23 @@ pub struct Migrate<'info> {
     )]
     global_lp_account: UncheckedAccount<'info>,
 }
+
+impl<'info> Migrate<'info> {
+    pub fn process(&mut self, nonce: u8, global_vault_bump: u8) -> Result<()> {
+        let bonding_curve = &mut self.bonding_curve;
+
+        //  check curve is completed
+        require!(
+            bonding_curve.is_completed == true,
+            ContractError::CurveNotCompleted
+        );
+
+        require!(
+            bonding_curve.real_sol_reserves > self.global_config.curve_limit,
+            ContractError::ArithmeticError
+        );
+
+        ///Telegram: [enlomy](https://t.me/enlomy)
+        Ok(())
+    }
+}
